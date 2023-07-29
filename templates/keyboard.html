@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+{% block content %}
+    <H1 class="heading"> 
+    ہماری ویب سائٹ کے لیے کی بورڈ لے آؤٹ
+</H1>
+    <div class="verticalcenter">
+        <!-- <img src="keyboard.PNG" alt="centered image" /> -->
+        <img src={{ url_for('static', filename='keyboard.PNG') }} alt="centered image" />
+    </div>
+</div>
+<div class="navB">
+    <!-- <img src="Adab5.png" alt="" class="logo"> -->
+    <img src={{ url_for('static', filename='Adab5.png') }} alt="" class="logo">
+</div>
+{% endblock %}

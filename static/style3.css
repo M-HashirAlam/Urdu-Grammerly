@@ -1,0 +1,621 @@
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: montserrat;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+
+/* ////////////////////////////////// */
+#menuToggle {
+  display: none;
+  position: relative;
+  top: 50px;
+  left: 50px;
+  position: absolute;
+  top: 30px;
+  z-index: 1;
+  left: 30px;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
+#menuToggle a {
+  text-decoration: none;
+  color: #232323;
+
+  transition: color 0.3s ease;
+}
+
+#menuToggle a:hover {
+  color: tomato;
+}
+
+
+#menuToggle input {
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: -7px;
+  left: -5px;
+
+  cursor: pointer;
+
+  opacity: 0;
+  /* hide this */
+  z-index: 2;
+  /* and place it over the hamburger */
+
+  -webkit-touch-callout: none;
+}
+
+/*
+ * Just a quick hamburger
+ */
+#menuToggle span {
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+
+  background: #cdcdcd;
+  border-radius: 3px;
+
+  z-index: 1;
+
+  transform-origin: 4px 0px;
+
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    opacity 0.55s ease;
+}
+
+#menuToggle span:first-child {
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+  transform-origin: 0% 100%;
+}
+
+/* 
+ * Transform all the slices of hamburger
+ * into a crossmark.
+ */
+#menuToggle input:checked~span {
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+  background: #232323;
+}
+
+/*
+ * But let's hide the middle one.
+ */
+#menuToggle input:checked~span:nth-last-child(3) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+ * Ohyeah and the last one should go the other direction
+ */
+#menuToggle input:checked~span:nth-last-child(2) {
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+ * Make this absolute positioned
+ * at the top left of the screen
+ */
+#menu {
+  position: absolute;
+  width: 300px;
+  margin: -100px 0 0 -50px;
+  padding: 50px;
+  padding-top: 125px;
+
+  background: #ededed;
+  list-style-type: none;
+  -webkit-font-smoothing: antialiased;
+  /* to stop flickering of text in safari */
+
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+}
+
+#menu li {
+  padding: 10px 0;
+  font-size: 22px;
+}
+
+/*
+ * And let's slide it in from the left
+ */
+#menuToggle input:checked~ul {
+  transform: none;
+}
+
+/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+nav {
+  background: #212121;
+  height: 70px;
+  width: 100%;
+}
+
+/* label.logo{
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+  } */
+
+#nav-one {
+  height: 100px;
+}
+
+section {
+  /* background: url(bg1.jpg) no-repeat; */
+  /* background-size: cover; */
+  height: calc(100vh - 140px);
+
+}
+
+
+
+#left {
+  width: 500px;
+  height: 300px;
+  float: left;
+  margin: 45px;
+  /*! padding: 30px; */
+  border: solid 4px black;
+  background-color: rgba(36, 18, 18, 0.068);
+  /* display: inline-block; */
+  margin-right: 80px;
+  text-align: center;
+  /* vertical-align: top; */
+}
+
+#right {
+  width: 500px;
+  height: 300px;
+  margin: 45px;
+
+
+  float: right;
+  background-color: aliceblue;
+  /* display: inline-block; */
+
+}
+
+#left h1 {
+  margin-top: 20px;
+  font-family: 'Inter';
+  font-size: 30px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.ab {
+  font-family: 'Lato', sans-serif;
+  /* display: block; */
+  display: inline-block;
+  width: 150px;
+  height: 50px;
+  /* line-height: 50px; */
+  font-weight: bold;
+  text-decoration: none;
+  background: black;
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid #333;
+  box-shadow: 5px 10px black;
+  transition: all .35s;
+  /* position: fixed;
+  top: 50%;
+  left: 20%; */
+  /* transform: translate(-50%, -50%); */
+}
+
+.ab:hover {
+  color: #fff;
+}
+
+.ab:hover:after {
+  width: 100%;
+
+}
+
+.ab:hover {
+  /* width: 160px; */
+  border: 3px solid black;
+  background: #0d8065;
+  color: white;
+}
+
+.ab:hover+.icon {
+  border: 3px solid black;
+  right: -25%;
+
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: black;
+  line-height: 40px;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  width: 120px;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #fff;
+}
+
+.topnav a:hover {
+  background-color: #0d8065;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: black;
+  color: white;
+}
+
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  width: 150px;
+}
+
+.logo {
+  height: 70px;
+  width: 80px;
+  float: right;
+
+}
+
+.head {
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  padding-top: 20px;
+  margin: 20px;
+}
+
+
+#right img {
+  width: 100%;
+  /* or any custom size */
+  height: 100%;
+  object-fit: fill;
+}
+
+#wrap2 {
+  width: 100%;
+  height: auto;
+  /* background-color: #3864a4; */
+  text-align: center;
+  /* border: black solid 5px; */
+  margin-top: 30px;
+
+}
+
+#wrap2 h1 {
+  /* padding-top: 50px; */
+  font-family: Irish Grover;
+  font-weight: 400;
+  font-size: 28px;
+  /* padding-bottom: 50px; */
+}
+
+#wrap2 p {
+  font-family: Irish Grover;
+  font-weight: 400
+}
+
+main {
+  height: calc(100vh - 174px);
+
+
+}
+
+#txtBox2 {
+  width: 50%;
+  height: 350px;
+  /* margin-top: 100px; */
+  background-color: #d9d9d9;
+  font-size: 25px;
+}
+
+.justified {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.row {
+  margin-top: 60px;
+}
+
+#space {
+  width: 100%;
+  height: 50px;
+  /* background-color: #3864a4; */
+}
+
+About {
+  height: calc(100vh - 140px); 
+ display: block;
+  /* background-color: #3864a4; */
+}
+
+#wrapA {
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  font-family: Inter;
+  font-size: 18px;
+}
+
+#spaceA {
+  width: 100%;
+  height: 50px;
+  /* background-color: #3864a4; */
+
+}
+
+.navB {
+  background: black;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.navC {
+  background: #212121;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+#sp {
+  display: inline-block;
+
+  /* margin-top: 500px; */
+  /* text-align: center; */
+  color: black;
+}
+
+#how {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#u {
+  left: 300px;
+  position: absolute;
+  top: 400px;
+}
+
+#p {
+  left: 550px;
+  top: 220px;
+  position: absolute;
+}
+
+#layout-text {
+  left: 10px;
+  position: absolute;
+  font-size: 20px;
+}
+
+
+.ab>a:nth-child(1) {
+  color: white;
+}
+@media only screen and (min-width:1015px) and (max-width:1205px) {
+  #left h1 {
+   
+    margin-top: 10px;
+    font-size: 23px;
+    }
+    #right {
+   
+    width: 400px;
+    }
+    #left {
+    
+    width: 400px;
+    }
+    
+    #sp > h1:nth-child(1) {
+    font-size: 19px;
+    }
+   
+    #how {
+    font-size: 14px;
+    }
+    
+}
+@media only screen and (min-width:700px) and (max-width:1014px) {
+#left {
+
+width: 300px;
+margin:30px 10px 30px 30px;
+
+}
+#left h1 {
+
+margin-top: 10px;
+font-size: 19px;
+padding: 10px;
+margin-bottom: 20px;
+
+}
+#right {
+
+width: 300px;
+margin:30px 30px 30px 10px;
+}
+#sp {
+width: 50%;
+}
+
+#sp > h1:nth-child(1) {
+font-size: 19px;
+}
+
+#how {
+font-size: 14px;
+}
+}
+@media screen and (max-width: 600px) {
+
+  .topnav {
+    display: none;
+    visibility: hidden;
+  }
+
+  #menuToggle {
+    display: block;
+    visibility: visible;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .topnav a {
+    width: auto;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-height: 600px) {
+
+
+
+#wrapA {
+
+  width: 80%;
+}
+
+
+
+#wrapA > p:nth-child(2) {
+  font-size: 17px;
+}
+
+
+
+#wrapA > h1:nth-child(1) {
+  font-size: 35px;
+}
+
+
+
+#wrapA > h1:nth-child(3) {
+  font-size: 35px;
+}
+
+
+
+#wrapA > p:nth-child(4) {
+  font-size: 17px;
+}
+
+}
+@media screen and (max-width: 543px) {
+
+
+
+#wrapA > h1:nth-child(1) {
+  font-size: 30px;
+}
+
+
+
+#wrapA > p:nth-child(2) {
+  font-size: 15px;
+}
+
+
+
+#wrapA > h1:nth-child(3) {
+  font-size: 30px;
+}
+
+
+
+#wrapA > p:nth-child(4) {
+  font-size: 15px;
+}
+
+
+
+#wrapA {
+  /* width: 50%; */
+  width: 80%;
+}
+
+#spaceA {
+  /* height: 50px; */
+  height: 20px;
+}
+
+
+
+
+
+}
+@media  screen  and (min-width:543px) and (max-width: 940px){
+
+
+
+#wrapA {
+
+  width: 70%;
+  font-size: 17px;
+}
+
+}

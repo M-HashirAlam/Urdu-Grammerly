@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={{ url_for('static', filename='q1.css') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='z1.css') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='button.css') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='keyboard2.css') }}>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Irish+Grover:wght@400&amp;display=swap"
+    data-tag="font">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Irish+Grover:wght@400&amp;display=swap"
+    data-tag="font">
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notonaskharabic.css"
+    data-tag="font">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    data-tag="font">
+    <script src={{ url_for('static', filename='urdutextbox.js') }}></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <title>ADAB | Urdu Text Editor</title>
+</head>
+<body>
+    <nav>
+        <!-- <img src="Adab5.png" alt="" class="logo"> -->
+        <img src={{ url_for('static', filename='Adab5.png') }} alt="" class="logo">
+        <div id="menuToggle">
+
+            <input type="checkbox" />
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+
+
+        <ul id="menu">
+            <a href="/">
+                <li>HOME</li>
+            </a>
+            <a href="/check">
+                <li>
+                    EDITOR
+                </li>
+            </a>
+            <a href="/grammar">
+                <li>GRAMMAR</li>
+            </a>
+            <a href="/about">
+                <li>ABOUT US</li>
+            </a>
+            <a href="/keyboard" >
+                <li>KEYBOARD</li>
+            </a>
+        </ul>
+        </div>
+        <div class="topnav">
+
+            <a href="/">HOME </a>
+            <a href="/check">EDITOR</a>
+            <a href="/grammar">GRAMMAR</a>
+            <a href="/about">ABOUT US</a>
+            <a href="/keyboard">KEYBOARD</a>
+
+        </div>
+
+
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

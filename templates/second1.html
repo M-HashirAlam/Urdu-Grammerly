@@ -1,0 +1,389 @@
+{% extends "_base.html" %}
+{% block content %}
+<style>
+    .hide{
+        display: none;
+    }
+#sidebar {
+
+<!--   			display: none;-->
+			width: 250px;
+			position: fixed;
+			right: 0;
+			top: 55pt;
+			bottom: 0;
+			overflow-y: scroll;
+			background-color: #f9f9f9;
+			padding: 10px;
+			border-left: 1px solid #ddd;
+		}
+
+		/* Media query to adjust the width of the sidebar for smaller screens */
+		@media screen and (max-width: 768px) {
+			#sidebar {
+				width: 100%;
+				height: 100%;
+				left: 0;
+				z-index: 999;
+			}
+			#show_results_button {
+				display: block;
+			}
+			#submit_button {
+				margin-top: 10px;
+			}
+		}
+
+
+</style>
+<style>
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 1;
+  background-color: transparent;
+}
+
+</style>
+
+    
+    <!-- <button class="button1"   id="start-button" >Start</button>
+    <button id="stop-button">Stop</button> -->
+    <div class="bu34">
+        <button class="bu1" id="next-word">اگلا لفظ</button>
+
+        <button class="bu1" onclick="guide()">قوائد</button>
+<!--        <button class="bu1"  id="submit_button" value="Correct" >املا کی غلطی</button>-->
+<!--        <input type="button" class="bu1" id="submit_button" value="Correct" onclick="submitText()">-->
+        <button style="display:none" id="show_results_button" class="bu1" onclick="showResults()">Show Results</button>
+
+<!--        <select class="bu1" id ="correction">-->
+<!--            <option default> املا کی غلطی </option>-->
+<!--        </select>-->
+        </div>
+    <!-- <div> -->
+        <main id="main">
+            <div class="justified" style="width: 100%;">
+
+               <form id="text_form">
+
+                <textarea id="txtBox2"  name="txtBox2" dir="rtl" placeholder=" لکھنا شروع کریں"></textarea>
+<!--                   <div id="overlay"></div>-->
+               </form>
+
+            </div>
+
+            <div id="sidebar">
+		<h2>Results</h2>
+		<ul id="results_list"></ul>
+		<button id="close_sidebar_button" onclick="closeSidebar()">X</button>
+                <div id="nextword" class="hide">
+<h3>predicted word</h3>
+                </div>
+	</div>
+
+
+
+
+            <div class="tb">
+                <div class="col">
+                    <div class="first box">
+                        <input id="font-size" type="number" value="16" min="1" max="100" onchange="f1(this)">
+                    </div>
+                    <div class="second box">
+                        <button type="button" onclick="f2(this)">
+                            <i class="fa-solid fa-bold">B</i>
+                        </button>
+                        <button type="button" onclick="f3(this)">
+                            <i class="fa-solid fa-italic">I</i>
+                        </button>
+                        <button type="button" onclick="f4(this)">
+                            <i class="fa-solid fa-underline">U</i>
+                        </button>
+                    </div>
+                    <div class="third box">
+                        <button type="button" onclick="f5(this)">
+                            <i class="fa-solid fa-align-left"><img src={{ url_for('static', filename='left.png') }} alt=""></i>
+                        </button>
+                        <button type="button" onclick="f6(this)">
+                            <i class="fa-solid fa-align-center"><img src={{ url_for('static', filename='center.png') }} alt=""></i>
+                        </button>
+                        <button type="button" onclick="f7(this)">
+                            <i class="fa-solid fa-align-right"><img src={{ url_for('static', filename='right.png') }} alt=""></i>
+                        </button>
+
+
+                    </div>
+                    <div class="fourth box">
+<!--                        <button type="button" onclick="f8(this)">aA</button>-->
+<!--                        <button type="button" onclick="f9()">-->
+<!--                            <i class="fa-solid fa-text-slash"><img src="{{ url_for('static', filename='erase.png') }}" alt=""></i>-->
+<!--                        </button>-->
+                        <button id="start-button"><img src={{ url_for('static', filename="icons8-microphone-24.png") }} alt=""></button>
+                        <button id="stop-button"><img src={{ url_for('static', filename="mic-of.png") }} width="18" height="20"></button>
+
+
+
+
+                        <input type="color" onchange="f10(this)">
+                    </div>
+                    <script src={{ url_for('static', filename="app.js") }}></script>
+                    <button onclick="saveDocAsFile()" class="ac">SAVE</button>
+                    <div class="first box"></div>
+                </div>
+
+            </div>
+            <div class="count">
+                <div>
+                    <h5 id="word-count" dir="rtl">0</h5>
+                    <p> Words </p>
+                </div>
+                <div>
+                    <h5 id="charac-count" dir="rtl">0</h5>
+                    <p> Characters </p>
+                </div>
+            </div>
+    <!-- </div> -->
+    <script src={{ url_for('static', filename="count.js") }}></script>
+    </main>
+
+<style>
+  .incorrect-word {
+    border-bottom: 2px solid red;
+  }
+</style>
+
+
+
+
+<script>
+
+    
+function submitText() {
+    var input_text = document.getElementById("txtBox2").value;
+    document.getElementById("txtBox2")
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/correct", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var results = JSON.parse(xhr.responseText);
+            var results_list = document.getElementById("results_list");
+
+            results_list.innerHTML = "";
+
+            // Apply red underline to incorrect words using the overlay approach
+            var overlay = document.getElementById("overlay");
+<!--            overlay.innerText = input_text;-->
+            var incorrectWords = Object.keys(results);
+            incorrectWords.forEach(function (word) {
+                var regex = new RegExp('\\b' + word + '\\b', 'g');
+                input_text = input_text.replace(regex, '<span style="text-decoration: underline red;">$&</span>');
+            });
+<!--            overlay.innerHTML = input_text;-->
+
+            if (results) {
+
+                for (var word in results) {
+                    var li1 = document.createElement("li");
+                    var li3 = document.createElement("li");
+                    var hh = document.createElement("h3");
+                    hh.innerText = "Incorrect Words";
+                    li1.innerText = word ;
+                    li1.style.textDecoration = "underline";
+                    li1.style.setProperty("text-decoration-color", "red");
+                    li1.style.fontWeight = "bold";
+                     li3.appendChild(hh);
+
+
+
+                    var ul = document.createElement("ul");
+                    ul.style.textDecoration = "none";
+
+                    for (var i = 0; i < results[word].length; i++) {
+                        var suggestion = results[word][i]["suggestion"];
+                        var distance = results[word][i]["distance"];
+                        var li2 = document.createElement("li");
+                        var h=document.createElement("h4");
+                        h.textContent="Suggestions"
+                        li2.textContent = suggestion ;
+
+                        ul.appendChild(li2);
+
+
+
+                    }
+                    li3.appendChild(li1);
+                    var lineBreak = document.createElement("br");
+                    li3.appendChild(lineBreak);
+                    li3.appendChild(h);
+
+                    li3.appendChild(ul);
+                    results_list.appendChild(li3);
+                }
+            } else {
+                var li = document.createElement("li");
+                li.innerText = "No incorrect words found.";
+                results_list.appendChild(li);
+            }
+        }
+    };
+    xhr.send(JSON.stringify({input_text: input_text}));
+}
+    const textareaElement = document.getElementById("txtBox2");
+
+    textareaElement.addEventListener("keyup", submitText);
+
+
+		function showResults() {
+			var sidebar = document.getElementById("sidebar");
+			sidebar.style.display = "block";
+			document.getElementById("show_results_button").style.display = "none";
+		}
+
+		function closeSidebar() {
+			var sidebar = document.getElementById("sidebar");
+			sidebar.style.display = "none";
+
+
+			document.getElementById("show_results_button").style.display = "block";
+		}
+	</script>
+
+
+    <script>
+
+        window.onload = myOnload;
+
+        function myOnload(evt) {
+
+            MakeTextBoxUrduEnabled(txtBox2);//enable Urdu in html text area
+        }
+
+
+        // for save as doc file
+
+        function saveDocAsFile() {
+            var textToSave = document.getElementById("txtBox2").value;
+            var textToSaveAsBlob = new Blob([textToSave], { type: "text/Doc" });
+            var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            //var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+            var fileNameToSaveAs = "TypingTester.doc";
+
+            var downloadLink = document.createElement("a");
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = "Download File";
+            downloadLink.href = textToSaveAsURL;
+            // downloadLink.onclick = destroyClickedElement;
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+
+            downloadLink.click();
+        }
+
+    </script>
+
+    <!-- <script src="voice.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $("#next-word").on("click", function (){
+    var words = $("#txtBox2").val();
+    console.log(words);
+    $.ajax({
+      url: "/predict",
+      type: "POST",
+      data: { words: words },
+      success: function (data) {
+        globalThis.checkedword = data.text[0];
+        var checkedword = data.text[0];
+        var suggestions = data.text[1];
+        suggestions = Object.keys(suggestions);
+        // console.log(suggestions);
+        if (data.text != "Word not found"){
+            document.getElementById("nextword").innerHTML=`<span id="nextwordresult">${data.text}</span><button onclick="addword()">Add</button>`
+        }
+        else{
+            document.getElementById("nextword").innerHTML=`<span id="nextwordresult">${data.text}</span>`
+        }
+        if(document.getElementById("nextword").classList.contains("hide")){
+            document.getElementById("nextword").classList.toggle("hide");
+        }
+        
+
+        //   let txtBox2 = document.getElementById("txtBox2");
+          // correction.innerHTML = ""; // clear previous options
+          // for (let i = 0; i < suggedsxZAngth; i++) {
+          //   const option = document.createElement("option");
+          //   option.value = suggestions[i];
+          //   option.innerHTML = suggestions[i];
+          //   correction.appendChild(option);
+          // }
+        //   if (data.text != "Word not found"){
+        //     txtBox2.value = txtBox2.value + " " + data.text;
+        //   }
+
+
+      },
+    });
+  })
+  function guide(){
+        var words = $("#txtBox2").val();
+    $.ajax({
+      url: "/guide",
+      type: "POST",
+      data: { sentence: words },
+      success: function (data) {
+        // var keys = Object.keys(data)
+        var html=""
+        data.forEach(element => html+=`<li>`+element+`</li>`)
+        document.getElementById("results_list").innerHTML = html;
+        showResults()
+      },
+    });
+    }
+    function addword(){
+        let word = document.getElementById("nextwordresult").innerHTML;
+        document.getElementById("txtBox2").value += word;
+        document.getElementById("nextword").classList.toggle("hide");
+
+    }
+</script>
+<!--    <script>-->
+<!--$(document).ready(function () {-->
+<!--  $("#txtBox2").on("keyup", function () {-->
+<!--    var words = this.value;-->
+<!--    console.log(words);-->
+<!--    $.ajax({-->
+<!--      url: "/check",-->
+<!--      type: "POST",-->
+<!--      data: { words: words },-->
+<!--      success: function (data) {-->
+<!--        globalThis.checkedword = data.text[0];-->
+<!--        var checkedword = data.text[0];-->
+<!--        var suggestions = data.text[1];-->
+<!--        suggestions = Object.keys(suggestions);-->
+<!--        console.log(suggestions);-->
+<!--        if (suggestions.length > 0) {-->
+<!--          const correction = document.getElementById("correction");-->
+<!--          let txtBox2 = document.getElementById("txtBox2");-->
+<!--          correction.innerHTML = ""; // clear previous options-->
+<!--          for (let i = 0; i < suggestions.length; i++) {-->
+<!--            const option = document.createElement("option");-->
+<!--            option.value = suggestions[i];-->
+<!--            option.innerHTML = suggestions[i];-->
+<!--            correction.appendChild(option);-->
+<!--          }-->
+<!--        }-->
+<!--      },-->
+<!--    });-->
+<!--  });-->
+
+
+<!--    </script>-->
+    <script src={{ url_for('static', filename="script.js") }}></script>
+
+{% endblock %}
